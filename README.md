@@ -6,7 +6,7 @@
 
 [![mvn](https://github.com/objectionary/eo-sys/actions/workflows/mvn.yml/badge.svg?branch=master)](https://github.com/objectionary/eo-sys/actions/workflows/mvn.yml)
 [![PDD status](http://www.0pdd.com/svg?name=objectionary/eo-sys)](http://www.0pdd.com/p?name=objectionary/eo-sys)
-[![codecov](https://codecov.io/gh/cqfn/eo/branch/master/graph/badge.svg)](https://codecov.io/gh/cqfn/eo)
+[![codecov](https://codecov.io/gh/objectionary/eo-sys/branch/master/graph/badge.svg)](https://codecov.io/gh/objectionary/eo-sys)
 [![Maven Central](https://img.shields.io/maven-central/v/org.eolang/eo-sys.svg)](https://maven-badges.herokuapp.com/maven-central/org.eolang/eo-sys)
 
 [![Hits-of-Code](https://hitsofcode.com/github/objectionary/eo-sys)](https://hitsofcode.com/view/github/objectionary/eo-sys)
