@@ -27,6 +27,7 @@ package EOorg.EOeolang.EOsys;
 import java.lang.management.ManagementFactory;
 import org.eolang.Data;
 import org.eolang.Dataized;
+import org.eolang.PhMethod;
 import org.eolang.PhWith;
 import org.eolang.Phi;
 import org.hamcrest.MatcherAssert;
@@ -34,45 +35,23 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 /**
- * CALL test.
+ * UNAME test.
  *
  * @since 0.1
  * @checkstyle TypeNameCheck (100 lines)
  */
-public final class EOcallTest {
+public final class EOunameTest {
 
     @Test
-    public void readsPid() {
+    public void readsSystemFamily() {
         MatcherAssert.assertThat(
             new Dataized(
-                new PhWith(
-                    new EOcall(Phi.Φ),
-                    "id",
-                    new Data.ToPhi("SYS_getpid")
+                new PhMethod(
+                    new EOuname(Phi.Φ),
+                    "is-windows"
                 )
-            ).take(Long.class),
-            Matchers.equalTo(
-                Long.parseLong(
-                    ManagementFactory.getRuntimeMXBean()
-                        .getName().split("[^0-9]")[0]
-                )
-            )
-        );
-    }
-
-    @Test
-    public void readsLogin() {
-        MatcherAssert.assertThat(
-            new Dataized(
-                new PhWith(
-                    new EOcall(Phi.Φ),
-                    "id",
-                    new Data.ToPhi("SYS_getlogin")
-                )
-            ).take(Long.class),
-            Matchers.equalTo(
-                0L
-            )
+            ).take(Boolean.class),
+            Matchers.is(Matchers.notNullValue())
         );
     }
 

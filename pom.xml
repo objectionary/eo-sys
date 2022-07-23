@@ -85,7 +85,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-runtime</artifactId>
-      <version>0.24.0</version>
+      <version>0.25.1</version>
     </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>
@@ -145,6 +145,7 @@ SOFTWARE.
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
+            <version>0.20.0</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>pmd:.*</exclude>

@@ -20,13 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
++alias org.eolang.hamcrest.assert-that
 +home https://github.com/objectionary/eo-sys
++junit
 +package org.eolang.sys
-+rt jvm org.eolang:eo-sys:0.0.0
 +version 0.0.0
 
-# Makes a syscall.
-# See https://man7.org/linux/man-pages/man2/syscall.2.html
-#
-# For the full list of IDs, see /usr/include/sys/syscall.h file in your OS
-[id args...] > call /int
+# Checks what is the family of the OS
+[] > checks-os-family
+  assert-that > @
+    or.
+      QQ.sys.uname.is-windows
+      QQ.sys.uname.is-macos
+      QQ.sys.uname.is-linux
+    $.is TRUE

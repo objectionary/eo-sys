@@ -25,8 +25,15 @@
 +rt jvm org.eolang:eo-sys:0.0.0
 +version 0.0.0
 
-# Makes a syscall.
-# See https://man7.org/linux/man-pages/man2/syscall.2.html
-#
-# For the full list of IDs, see /usr/include/sys/syscall.h file in your OS
-[id args...] > call /int
+# Represents information about operating system.
+# See https://man7.org/linux/man-pages/man2/uname.2.html
+[] > uname
+
+  # TRUE if it's Windows
+  [] > is-windows /bool
+
+  # TRUE if it's Linux
+  [] > is-linux /bool
+
+  # TRUE if it's MacOS
+  [] > is-macos /bool

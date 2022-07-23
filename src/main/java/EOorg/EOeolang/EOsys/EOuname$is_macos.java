@@ -24,56 +24,29 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import java.lang.management.ManagementFactory;
+import java.util.Locale;
+import org.eolang.AtComposite;
 import org.eolang.Data;
-import org.eolang.Dataized;
-import org.eolang.PhWith;
+import org.eolang.PhDefault;
 import org.eolang.Phi;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 
 /**
- * CALL test.
+ * UNAME.IS-MACOS.
  *
  * @since 0.1
  * @checkstyle TypeNameCheck (100 lines)
  */
-public final class EOcallTest {
+public class EOuname$is_macos extends PhDefault {
 
-    @Test
-    public void readsPid() {
-        MatcherAssert.assertThat(
-            new Dataized(
-                new PhWith(
-                    new EOcall(Phi.Φ),
-                    "id",
-                    new Data.ToPhi("SYS_getpid")
-                )
-            ).take(Long.class),
-            Matchers.equalTo(
-                Long.parseLong(
-                    ManagementFactory.getRuntimeMXBean()
-                        .getName().split("[^0-9]")[0]
-                )
-            )
-        );
-    }
-
-    @Test
-    public void readsLogin() {
-        MatcherAssert.assertThat(
-            new Dataized(
-                new PhWith(
-                    new EOcall(Phi.Φ),
-                    "id",
-                    new Data.ToPhi("SYS_getlogin")
-                )
-            ).take(Long.class),
-            Matchers.equalTo(
-                0L
-            )
-        );
+    /**
+     * Ctor.
+     * @param sigma The \sigma
+     */
+    public EOuname$is_macos(final Phi sigma) {
+        super(sigma);
+        this.add("φ", new AtComposite(this, rho -> new Data.ToPhi(
+            System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")
+        )));
     }
 
 }

@@ -24,8 +24,12 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
+import EOorg.EOeolang.EOerror;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import org.eolang.AtComposite;
 import org.eolang.AtFree;
 import org.eolang.Data;
@@ -40,6 +44,20 @@ import org.eolang.Phi;
  * @checkstyle TypeNameCheck (100 lines)
  */
 public class EOcall extends PhDefault {
+
+    /**
+     * Syscall IDs.
+     */
+    private static final Map<String, Integer> IDS = new HashMap<>(0);
+
+    static {
+        final String uname = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+        if (uname.contains("mac") || uname.contains("linux")) {
+            EOcall.IDS.put("SYS_write", 1);
+            EOcall.IDS.put("SYS_getpid", 20);
+            EOcall.IDS.put("SYS_getlogin", 49);
+        }
+    }
 
     /**
      * Interface to stdlib.
@@ -58,9 +76,7 @@ public class EOcall extends PhDefault {
     /**
      * Ctor.
      * @param sigma The \sigma
-     * @checkstyle BracketsStructureCheck (200 lines)
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public EOcall(final Phi sigma) {
         super(sigma);
         this.add("id", new AtFree());
@@ -68,11 +84,17 @@ public class EOcall extends PhDefault {
             final EOcall.CStdLib lib = EOcall.CStdLib.class.cast(
                 Native.load("c", EOcall.CStdLib.class)
             );
-            return new Data.ToPhi(
-                (long) lib.syscall(
-                    new Param(rho, "id").strong(Long.class).intValue()
-                )
-            );
+            final String txt = new Param(rho, "id").strong(String.class);
+            final Integer cid = EOcall.IDS.get(txt);
+            final Phi ret;
+            if (EOcall.IDS.isEmpty()) {
+                ret = EOerror.make("It's impossible to syscall at this OS");
+            } else if (cid == null) {
+                ret = EOerror.make("Unknown syscall '%s'", txt);
+            } else {
+                ret = new Data.ToPhi((long) lib.syscall(cid));
+            }
+            return ret;
         }));
     }
 
