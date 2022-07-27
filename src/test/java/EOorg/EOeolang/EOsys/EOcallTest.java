@@ -48,7 +48,7 @@ public final class EOcallTest {
                 new PhWith(
                     new EOcall(Phi.Φ),
                     "id",
-                    new Data.ToPhi("SYS_getpid")
+                    new Data.ToPhi("getpid")
                 )
             ).take(Long.class),
             Matchers.equalTo(
@@ -70,7 +70,7 @@ public final class EOcallTest {
                         new PhWith(
                             new PhWith(
                                 new EOcall(Phi.Φ),
-                                0, new Data.ToPhi("SYS_write")
+                                0, new Data.ToPhi("write")
                             ),
                             1, new Data.ToPhi(1L)
                         ),

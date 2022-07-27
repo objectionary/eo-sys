@@ -61,12 +61,11 @@ public class EOcall extends PhDefault {
     static {
         final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
         if (uname.contains("mac")) {
-            EOcall.IDS.put("SYS_write", 1);
-            EOcall.IDS.put("SYS_getpid", 20);
-        }
-        if (uname.contains("linux")) {
-            EOcall.IDS.put("SYS_write", 1);
-            EOcall.IDS.put("SYS_getpid", 39);
+            EOcall.IDS.put("write", 1);
+            EOcall.IDS.put("getpid", 20);
+        } else if (uname.contains("linux")) {
+            EOcall.IDS.put("write", 1);
+            EOcall.IDS.put("getpid", 39);
         }
     }
 

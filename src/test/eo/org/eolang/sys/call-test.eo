@@ -30,7 +30,7 @@
 # with zero: the PID should definitely be larger.
 [] > reads-pid-from-unix
   assert-that > @
-    QQ.sys.call "SYS_getpid"
+    QQ.sys.call "getpid"
     $.greater-than 0
 
 # Making a syscall SYS_write and prints a short message
@@ -39,7 +39,7 @@
   "Hello, друг!" > msg
   assert-that > @
     QQ.sys.call
-      "SYS_write"
+      "write"
       1
       msg
       msg.length

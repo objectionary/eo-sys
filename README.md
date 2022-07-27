@@ -15,7 +15,7 @@
 
 [EO](https://www.eolang.org) objects for interactions with operating system.
 
-This is how you make a [`SYS_WRITE`](https://man7.org/linux/man-pages/man2/write.2.html) 
+This is how you make a [`write`](https://man7.org/linux/man-pages/man2/write.2.html) 
 [syscall](https://man7.org/linux/man-pages/man2/syscall.2.html) 
 to print "Hello, world" to the console (here `1` is the handle of 
 [stdout](https://en.wikipedia.org/wiki/Standard_streams)):
@@ -24,7 +24,7 @@ to print "Hello, world" to the console (here `1` is the handle of
 [] > app
   "Hello, world!" > msg
   QQ.sys.call > @
-    "SYS_write"
+    "write"
     1
     msg
     msg.length
@@ -38,7 +38,7 @@ This is how you get the current process ID using `SYS_getpid`:
     QQ.txt.sprintf
       "Current PID is %d"
       QQ.sys.call
-        "SYS_getpid"
+        "getpid"
 ```
 
 This is how you detect what OS you are with:
