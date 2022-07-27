@@ -61,19 +61,6 @@ public final class EOcallTest {
     }
 
     @Test
-    public void readsLogin() {
-        MatcherAssert.assertThat(
-            new Dataized(
-                new PhWith(
-                    new EOcall(Phi.Φ),
-                    0, new Data.ToPhi("SYS_getlogin")
-                )
-            ).take(Long.class),
-            Matchers.not(Matchers.equalTo(0L))
-        );
-    }
-
-    @Test
     public void printsToConsole() {
         final String msg = "Hello, друг!\n";
         MatcherAssert.assertThat(

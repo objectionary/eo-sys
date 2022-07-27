@@ -26,21 +26,14 @@
 +package org.eolang.sys
 +version 0.0.0
 
-# Making a syscall #20 (SYS_getpid) and compares the result
+# Making a syscall SYS_getpid and compares the result
 # with zero: the PID should definitely be larger.
 [] > reads-pid-from-unix
   assert-that > @
     QQ.sys.call "SYS_getpid"
     $.greater-than 0
 
-# Making a syscall #49 (SYS_getlogin) and prints the name
-# of the currently logged in user to the console.
-[] > prints-login-from-unix
-  assert-that > @
-    QQ.sys.call "SYS_getlogin"
-    $.greater-than 0
-
-# Making a syscall #4 (SYS_write) and prints a short message
+# Making a syscall SYS_write and prints a short message
 # to the console.
 [] > prints-to-console
   "Hello, друг!" > msg

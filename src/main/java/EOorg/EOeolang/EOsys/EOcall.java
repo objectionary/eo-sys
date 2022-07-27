@@ -60,10 +60,13 @@ public class EOcall extends PhDefault {
 
     static {
         final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
-        if (uname.contains("mac") || uname.contains("linux")) {
+        if (uname.contains("mac")) {
             EOcall.IDS.put("SYS_write", 1);
             EOcall.IDS.put("SYS_getpid", 20);
-            EOcall.IDS.put("SYS_getlogin", 49);
+        }
+        if (uname.contains("linux")) {
+            EOcall.IDS.put("SYS_write", 1);
+            EOcall.IDS.put("SYS_getpid", 39);
         }
     }
 
@@ -143,13 +146,20 @@ public class EOcall extends PhDefault {
                         }
                         params[index] = val;
                     }
-                    return new Data.ToPhi(
-                        Integer.class.cast(
-                            lib.getClass().getMethod("syscall", int.class, Object[].class).invoke(
-                                lib, cid, params
-                            )
-                        ).longValue()
+                    final int ret = Integer.class.cast(
+                        lib.getClass().getMethod("syscall", int.class, Object[].class).invoke(
+                            lib, cid, params
+                        )
                     );
+                    if (ret == -1) {
+                        throw new ExFailure(
+                            String.format(
+                                "Syscall #%d returned -1, while errno=%d",
+                                cid, Native.getLastError()
+                            )
+                        );
+                    }
+                    return new Data.ToPhi((long) ret);
                 }
             )
         );
