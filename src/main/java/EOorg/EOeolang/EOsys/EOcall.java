@@ -171,6 +171,7 @@ public class EOcall extends PhDefault {
                 )
             );
         }
+        return cid;
     }
 
 }
