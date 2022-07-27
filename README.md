@@ -15,9 +15,52 @@
 
 [EO](https://www.eolang.org) objects for interactions with operating system.
 
-This is how you make a syscall:
+This is how you make a [`SYS_WRITE`](https://man7.org/linux/man-pages/man2/write.2.html) 
+[syscall](https://man7.org/linux/man-pages/man2/syscall.2.html) 
+to print "Hello, world" to the console (here `1` is the handle of 
+[stdout](https://en.wikipedia.org/wiki/Standard_streams)):
 
 ```
+[] > app
+  "Hello, world!" > msg
+  QQ.sys.call > @
+    "SYS_write"
+    1
+    msg
+    msg.length
+```
+
+This is how you get the current process ID using `SYS_getpid`:
+
+```
+[] > app
+  QQ.io.stdout > @
+    QQ.txt.sprintf
+      "Current PID is %d"
+      QQ.sys.call
+        "SYS_getpid"
+```
+
+This is how you detect what OS you are with:
+
+```
+[] > app
+  QQ.io.stdout > @
+    QQ.txt.sprintf
+      "This is %s"
+      switch.
+        * 
+          QQ.sys.uname.is-windows
+          "Windows"
+        * 
+          QQ.sys.uname.is-unix
+          "Unix"
+        * 
+          QQ.sys.uname.is-macos
+          "MacOS"
+        * 
+          TRUE
+          "something else"
 ```
 
 ## How to Contribute
