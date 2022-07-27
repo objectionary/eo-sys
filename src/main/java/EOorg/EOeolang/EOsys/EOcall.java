@@ -99,29 +99,6 @@ public class EOcall extends PhDefault {
                     final EOcall.CStdLib lib = EOcall.CStdLib.class.cast(
                         Native.load("c", EOcall.CStdLib.class)
                     );
-                    final String txt = new Param(rho, "id").strong(String.class);
-                    final Integer cid;
-                    if (txt.matches("[0-9]+")) {
-                        cid = Integer.parseInt(txt);
-                    } else {
-                        cid = EOcall.IDS.get(txt);
-                    }
-                    if (EOcall.IDS.isEmpty()) {
-                        throw new ExFailure(
-                            String.format(
-                                "It's impossible to syscall at this OS: '%s'",
-                                EOcall.UNAME
-                            )
-                        );
-                    }
-                    if (cid == null) {
-                        throw new ExFailure(
-                            String.format(
-                                "Unknown syscall '%s' for '%s'",
-                                txt, EOcall.UNAME
-                            )
-                        );
-                    }
                     final Phi[] args = new Param(rho, "args").strong(Phi[].class);
                     final Object[] params = new Object[args.length];
                     for (int index = 0; index < args.length; ++index) {
@@ -145,6 +122,7 @@ public class EOcall extends PhDefault {
                         }
                         params[index] = val;
                     }
+                    final int cid = EOcall.number(rho);
                     final int ret = Integer.class.cast(
                         lib.getClass().getMethod("syscall", int.class, Object[].class).invoke(
                             lib, cid, params
@@ -162,6 +140,37 @@ public class EOcall extends PhDefault {
                 }
             )
         );
+    }
+
+    /**
+     * Take call ID.
+     * @param rho The \rho
+     * @return ID
+     */
+    private static int number(final Phi rho) {
+        final String txt = new Param(rho, "id").strong(String.class);
+        final Integer cid;
+        if (txt.matches("[0-9]+")) {
+            cid = Integer.parseInt(txt);
+        } else {
+            cid = EOcall.IDS.get(txt);
+        }
+        if (EOcall.IDS.isEmpty()) {
+            throw new ExFailure(
+                String.format(
+                    "It's impossible to syscall at this OS: '%s'",
+                    EOcall.UNAME
+                )
+            );
+        }
+        if (cid == null) {
+            throw new ExFailure(
+                String.format(
+                    "Unknown syscall '%s' for '%s'",
+                    txt, EOcall.UNAME
+                )
+            );
+        }
     }
 
 }
