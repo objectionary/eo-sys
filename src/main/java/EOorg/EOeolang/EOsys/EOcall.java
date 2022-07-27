@@ -56,31 +56,17 @@ public class EOcall extends PhDefault {
     /**
      * Syscall IDs.
      */
-    private static final Map<String, Integer> IDS = new HashMap<>(0);
+    private static final Map<String, Integer> GLOSSARY = new HashMap<>(0);
 
     static {
         final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
         if (uname.contains("mac")) {
-            EOcall.IDS.put("write", 1);
-            EOcall.IDS.put("getpid", 20);
+            EOcall.GLOSSARY.put("write", 1);
+            EOcall.GLOSSARY.put("getpid", 20);
         } else if (uname.contains("linux")) {
-            EOcall.IDS.put("write", 1);
-            EOcall.IDS.put("getpid", 39);
+            EOcall.GLOSSARY.put("write", 1);
+            EOcall.GLOSSARY.put("getpid", 39);
         }
-    }
-
-    /**
-     * Interface to stdlib.
-     * @since 0.1
-     */
-    interface CStdLib extends Library {
-        /**
-         * Make syscall.
-         * @param cid Call ID from sys/syscall.h
-         * @param args Arguments
-         * @return The result as LONG
-         */
-        int syscall(int cid, Object... args);
     }
 
     /**
@@ -153,9 +139,9 @@ public class EOcall extends PhDefault {
         if (txt.matches("[0-9]+")) {
             cid = Integer.parseInt(txt);
         } else {
-            cid = EOcall.IDS.get(txt);
+            cid = EOcall.GLOSSARY.get(txt);
         }
-        if (EOcall.IDS.isEmpty()) {
+        if (EOcall.GLOSSARY.isEmpty()) {
             throw new ExFailure(
                 String.format(
                     "It's impossible to syscall at this OS: '%s'",
@@ -172,6 +158,20 @@ public class EOcall extends PhDefault {
             );
         }
         return cid;
+    }
+
+    /**
+     * Interface to stdlib.
+     * @since 0.1
+     */
+    interface CStdLib extends Library {
+        /**
+         * Make syscall.
+         * @param cid Call ID from sys/syscall.h
+         * @param args Arguments
+         * @return The result as LONG
+         */
+        int syscall(int cid, Object... args);
     }
 
 }
