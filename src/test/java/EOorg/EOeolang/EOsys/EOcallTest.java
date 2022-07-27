@@ -66,13 +66,33 @@ public final class EOcallTest {
             new Dataized(
                 new PhWith(
                     new EOcall(Phi.Φ),
-                    "id",
-                    new Data.ToPhi("SYS_getlogin")
+                    0, new Data.ToPhi("SYS_getlogin")
                 )
             ).take(Long.class),
-            Matchers.equalTo(
-                0L
-            )
+            Matchers.not(Matchers.equalTo(0L))
+        );
+    }
+
+    @Test
+    public void printsToConsole() {
+        final String msg = "Hello, друг!\n";
+        MatcherAssert.assertThat(
+            new Dataized(
+                new PhWith(
+                    new PhWith(
+                        new PhWith(
+                            new PhWith(
+                                new EOcall(Phi.Φ),
+                                0, new Data.ToPhi("SYS_write")
+                            ),
+                            1, new Data.ToPhi(1L)
+                        ),
+                        2, new Data.ToPhi(msg)
+                    ),
+                    3, new Data.ToPhi((long) msg.length())
+                )
+            ).take(Long.class),
+            Matchers.equalTo((long) msg.length())
         );
     }
 

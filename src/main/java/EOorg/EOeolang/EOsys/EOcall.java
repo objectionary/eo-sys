@@ -24,15 +24,18 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import EOorg.EOeolang.EOerror;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.eolang.AtComposite;
 import org.eolang.AtFree;
+import org.eolang.AtVararg;
 import org.eolang.Data;
+import org.eolang.Dataized;
+import org.eolang.ExFailure;
 import org.eolang.Param;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
@@ -46,12 +49,17 @@ import org.eolang.Phi;
 public class EOcall extends PhDefault {
 
     /**
+     * Name of the OS.
+     */
+    public static final String UNAME = System.getProperty("os.name");
+
+    /**
      * Syscall IDs.
      */
     private static final Map<String, Integer> IDS = new HashMap<>(0);
 
     static {
-        final String uname = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+        final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
         if (uname.contains("mac") || uname.contains("linux")) {
             EOcall.IDS.put("SYS_write", 1);
             EOcall.IDS.put("SYS_getpid", 20);
@@ -80,22 +88,71 @@ public class EOcall extends PhDefault {
     public EOcall(final Phi sigma) {
         super(sigma);
         this.add("id", new AtFree());
-        this.add("φ", new AtComposite(this, rho -> {
-            final EOcall.CStdLib lib = EOcall.CStdLib.class.cast(
-                Native.load("c", EOcall.CStdLib.class)
-            );
-            final String txt = new Param(rho, "id").strong(String.class);
-            final Integer cid = EOcall.IDS.get(txt);
-            final Phi ret;
-            if (EOcall.IDS.isEmpty()) {
-                ret = EOerror.make("It's impossible to syscall at this OS");
-            } else if (cid == null) {
-                ret = EOerror.make("Unknown syscall '%s'", txt);
-            } else {
-                ret = new Data.ToPhi((long) lib.syscall(cid));
-            }
-            return ret;
-        }));
+        this.add("args", new AtVararg());
+        this.add(
+            "φ",
+            new AtComposite(
+                this,
+                rho -> {
+                    final EOcall.CStdLib lib = EOcall.CStdLib.class.cast(
+                        Native.load("c", EOcall.CStdLib.class)
+                    );
+                    final String txt = new Param(rho, "id").strong(String.class);
+                    final Integer cid;
+                    if (txt.matches("[0-9]+")) {
+                        cid = Integer.parseInt(txt);
+                    } else {
+                        cid = EOcall.IDS.get(txt);
+                    }
+                    if (EOcall.IDS.isEmpty()) {
+                        throw new ExFailure(
+                            String.format(
+                                "It's impossible to syscall at this OS: '%s'",
+                                EOcall.UNAME
+                            )
+                        );
+                    }
+                    if (cid == null) {
+                        throw new ExFailure(
+                            String.format(
+                                "Unknown syscall '%s' for '%s'",
+                                txt, EOcall.UNAME
+                            )
+                        );
+                    }
+                    final Phi[] args = new Param(rho, "args").strong(Phi[].class);
+                    final Object[] params = new Object[args.length];
+                    for (int index = 0; index < args.length; ++index) {
+                        Object val = new Dataized(args[index]).take();
+                        if (val instanceof Long) {
+                            val = Long.class.cast(val).intValue();
+                        }
+                        if (val instanceof String) {
+                            val = Native.toByteArray(
+                                String.class.cast(val), StandardCharsets.UTF_8
+                            );
+                        }
+                        if (val instanceof Double || val instanceof Boolean
+                            || val instanceof Phi[]) {
+                            throw new ExFailure(
+                                String.format(
+                                    "Type '%s' is not supported by syscall",
+                                    val.getClass().getCanonicalName()
+                                )
+                            );
+                        }
+                        params[index] = val;
+                    }
+                    return new Data.ToPhi(
+                        Integer.class.cast(
+                            lib.getClass().getMethod("syscall", int.class, Object[].class).invoke(
+                                lib, cid, params
+                            )
+                        ).longValue()
+                    );
+                }
+            )
+        );
     }
 
 }

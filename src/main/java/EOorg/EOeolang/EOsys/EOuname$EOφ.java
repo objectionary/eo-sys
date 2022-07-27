@@ -24,28 +24,32 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import org.eolang.AtComposite;
+import org.eolang.AtOnce;
+import org.eolang.AtSimple;
 import org.eolang.Data;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
 
 /**
- * UNAME.IS-WINDOWS.
+ * UNAME.φ.
  *
  * @since 0.1
  * @checkstyle TypeNameCheck (100 lines)
  */
-public class EOuname$is_windows extends PhDefault {
+public class EOuname$EOφ extends PhDefault {
+
+    /**
+     * Name of the OS.
+     */
+    public static final String NAME = System.getProperty("os.name");
 
     /**
      * Ctor.
      * @param sigma The \sigma
      */
-    public EOuname$is_windows(final Phi sigma) {
+    public EOuname$EOφ(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(this, rho -> new Data.ToPhi(
-            System.getProperty("os.name").startsWith("Windows")
-        )));
+        this.add("φ", new AtOnce(new AtSimple(new Data.ToPhi(EOuname$EOφ.NAME))));
     }
 
 }

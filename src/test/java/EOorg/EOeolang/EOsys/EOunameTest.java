@@ -24,11 +24,7 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import java.lang.management.ManagementFactory;
-import org.eolang.Data;
 import org.eolang.Dataized;
-import org.eolang.PhMethod;
-import org.eolang.PhWith;
 import org.eolang.Phi;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -46,11 +42,8 @@ public final class EOunameTest {
     public void readsSystemFamily() {
         MatcherAssert.assertThat(
             new Dataized(
-                new PhMethod(
-                    new EOuname(Phi.Φ),
-                    "is-windows"
-                )
-            ).take(Boolean.class),
+                new EOuname$EOφ(Phi.Φ)
+            ).take(String.class),
             Matchers.is(Matchers.notNullValue())
         );
     }
