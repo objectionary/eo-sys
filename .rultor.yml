@@ -1,3 +1,5 @@
+architects:
+  - yegor256
 assets:
   settings.xml: yegor256/objectionary-secrets#settings.xml
   pubring.gpg: yegor256/objectionary-secrets#pubring.gpg

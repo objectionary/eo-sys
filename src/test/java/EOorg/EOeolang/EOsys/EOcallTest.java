@@ -32,6 +32,8 @@ import org.eolang.Phi;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 /**
  * CALL test.
@@ -42,6 +44,7 @@ import org.junit.jupiter.api.Test;
 public final class EOcallTest {
 
     @Test
+    @DisabledOnOs(OS.WINDOWS)
     public void readsPid() {
         MatcherAssert.assertThat(
             new Dataized(
@@ -61,6 +64,7 @@ public final class EOcallTest {
     }
 
     @Test
+    @DisabledOnOs(OS.WINDOWS)
     public void printsToConsole() {
         final String msg = "Hello, друг!\n";
         MatcherAssert.assertThat(

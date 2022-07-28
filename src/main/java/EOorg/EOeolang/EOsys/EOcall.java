@@ -55,13 +55,15 @@ public class EOcall extends PhDefault {
 
     /**
      * Syscall IDs.
+     * @link https://opensource.apple.com/source/xnu/xnu-1504.3.12/bsd/kern/syscalls.master
+     * @link https://unix.stackexchange.com/questions/421750/where-do-you-find-the-syscall-table-for-linux
      */
     private static final Map<String, Integer> GLOSSARY = new HashMap<>(0);
 
     static {
         final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
         if (uname.contains("mac")) {
-            EOcall.GLOSSARY.put("write", 1);
+            EOcall.GLOSSARY.put("write", 4);
             EOcall.GLOSSARY.put("getpid", 20);
         } else if (uname.contains("linux")) {
             EOcall.GLOSSARY.put("write", 1);
