@@ -29,7 +29,8 @@ to print "Hello, world" to the console (here `1` is the handle of
     msg.length
 ```
 
-This is how you get the current process ID using `SYS_getpid`:
+This is how you get the current process ID using
+[`getpid`](https://man7.org/linux/man-pages/man2/getpid.2.html):
 
 ```
 [] > app
