@@ -1,4 +1,4 @@
-<img src="https://www.yegor256.com/images/books/elegant-objects/cactus.svg" height="100px" />
+<img alt="logo" src="https://www.objectionary.com/cactus.svg" height="100px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](http://www.rultor.com/b/objectionary/eo-sys)](http://www.rultor.com/p/objectionary/eo-sys)
@@ -8,7 +8,6 @@
 [![PDD status](http://www.0pdd.com/svg?name=objectionary/eo-sys)](http://www.0pdd.com/p?name=objectionary/eo-sys)
 [![codecov](https://codecov.io/gh/objectionary/eo-sys/branch/master/graph/badge.svg)](https://codecov.io/gh/objectionary/eo-sys)
 [![Maven Central](https://img.shields.io/maven-central/v/org.eolang/eo-sys.svg)](https://maven-badges.herokuapp.com/maven-central/org.eolang/eo-sys)
-
 [![Hits-of-Code](https://hitsofcode.com/github/objectionary/eo-sys)](https://hitsofcode.com/view/github/objectionary/eo-sys)
 ![Lines of code](https://img.shields.io/tokei/lines/github/objectionary/eo-sys)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/objectionary/eo-sys/blob/master/LICENSE.txt)
