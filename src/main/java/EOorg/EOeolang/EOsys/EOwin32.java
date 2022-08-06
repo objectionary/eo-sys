@@ -119,8 +119,8 @@ public class EOwin32 extends PhDefault {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new IllegalStateException(
                 String.format(
-                    "Can't find method '%s' with types '%s'",
-                    name, types
+                    "Can't find method '%s' with %d types '%s'",
+                    name, types.length, types
                 ),
                 ex
             );
