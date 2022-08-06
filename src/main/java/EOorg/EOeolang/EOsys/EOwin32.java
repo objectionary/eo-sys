@@ -26,6 +26,7 @@ package EOorg.EOeolang.EOsys;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import org.eolang.AtComposite;
 import org.eolang.AtFree;
@@ -62,6 +63,7 @@ public class EOwin32 extends PhDefault {
                     final Kernel32 lib = Native.load("kernel32", Kernel32.class);
                     final Phi[] args = new Param(rho, "args").strong(Phi[].class);
                     final Object[] params = new Object[args.length];
+                    final Class<?>[] types = new Class<?>[args.length];
                     for (int index = 0; index < args.length; ++index) {
                         Object val = new Dataized(args[index]).take();
                         if (val instanceof Long) {
@@ -82,12 +84,17 @@ public class EOwin32 extends PhDefault {
                             );
                         }
                         params[index] = val;
+                        types[index] = val.getClass();
                     }
                     final String function = new Param(rho, "function").strong(String.class);
+                    final Method mtd = Method.class.cast(
+                        lib.getClass().getClass().getMethod(
+                            "getMethod",
+                            Class[].class
+                        ).invoke(lib.getClass(), function, types)
+                    );
                     final int ret = Integer.class.cast(
-                        lib.getClass().getMethod(function, Object[].class).invoke(
-                            lib, params
-                        )
+                        mtd.invoke(lib, params)
                     );
                     return new Data.ToPhi((long) ret);
                 }
