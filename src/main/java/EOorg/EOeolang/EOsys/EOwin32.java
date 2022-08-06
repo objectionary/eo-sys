@@ -26,6 +26,7 @@ package EOorg.EOeolang.EOsys;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import org.eolang.AtComposite;
@@ -48,6 +49,11 @@ import org.eolang.Phi;
 public class EOwin32 extends PhDefault {
 
     /**
+     * Kernel32 lib.
+     */
+    private static final Kernel32 KERNEL = Native.load("kernel32", Kernel32.class);
+
+    /**
      * Ctor.
      * @param sigma The \sigma
      */
@@ -60,7 +66,6 @@ public class EOwin32 extends PhDefault {
             new AtComposite(
                 this,
                 rho -> {
-                    final Kernel32 lib = Native.load("kernel32", Kernel32.class);
                     final Phi[] args = new Param(rho, "args").strong(Phi[].class);
                     final Object[] params = new Object[args.length];
                     final Class<?>[] types = new Class<?>[args.length];
@@ -86,20 +91,40 @@ public class EOwin32 extends PhDefault {
                         params[index] = val;
                         types[index] = val.getClass();
                     }
-                    final String function = new Param(rho, "function").strong(String.class);
-                    final Method mtd = Method.class.cast(
-                        lib.getClass().getClass().getMethod(
-                            "getMethod",
-                            Class[].class
-                        ).invoke(lib.getClass(), function, types)
-                    );
                     final int ret = Integer.class.cast(
-                        mtd.invoke(lib, params)
+                        EOwin32.func(
+                            new Param(rho, "function").strong(String.class), types
+                        ).invoke(EOwin32.KERNEL, params)
                     );
                     return new Data.ToPhi((long) ret);
                 }
             )
         );
+    }
+
+    /**
+     * Find the function in the library.
+     * @param name The name of it, for example "GetCurrentProcessId"
+     * @param types The types it accepts
+     * @return The method
+     */
+    private static Method func(final String name, final Class<?>... types) {
+        try {
+            return Method.class.cast(
+                Class.class.getMethod(
+                    "getMethod",
+                    Class[].class
+                ).invoke(KERNEL.getClass(), name, types)
+            );
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            throw new IllegalStateException(
+                String.format(
+                    "Can't find method '%s' with types '%s'",
+                    name, types
+                ),
+                ex
+            );
+        }
     }
 
 }
