@@ -109,18 +109,24 @@ public class EOwin32 extends PhDefault {
      * @return The method
      */
     private static Method func(final String name, final Class<?>... types) {
+        final Method mtd;
+        try {
+            mtd = Class.class.getMethod("getMethod");
+        } catch (final NoSuchMethodException ex) {
+            throw new IllegalStateException(
+                "Can't find method 'getMethod()'",
+                ex
+            );
+        }
         try {
             return Method.class.cast(
-                Class.class.getMethod(
-                    "getMethod",
-                    Class[].class
-                ).invoke(KERNEL.getClass(), name, types)
+                mtd.invoke(KERNEL.getClass(), name, types)
             );
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+        } catch (final IllegalAccessException | InvocationTargetException ex) {
             throw new IllegalStateException(
                 String.format(
-                    "Can't find method '%s' with %d types '%s'",
-                    name, types.length, types
+                    "Can't invoke getMethod('%s', %d types)",
+                    name, types.length
                 ),
                 ex
             );
