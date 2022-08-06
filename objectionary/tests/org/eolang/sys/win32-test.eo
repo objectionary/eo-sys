@@ -27,28 +27,12 @@
 +package org.eolang.sys
 +version 0.0.4
 
-# Making a syscall 'getpid' and compares the result
+# Making a Win32 'GetCurrentProcessId' function call and compares the result
 # with zero: the PID should definitely be larger.
-[] > reads-pid-from-unix
+[] > reads-pid-from-win32
   if. > @
-    QQ.sys.uname.is-windows
+    QQ.sys.uname.is-windows.not
     nop
     assert-that
-      QQ.sys.call "getpid"
+      QQ.sys.win32 "GetCurrentProcessId"
       $.greater-than 0
-
-# Making a syscall 'write' and prints a short message
-# to the console.
-[] > prints-to-console
-  "Hello, друг!" > msg
-  if. > @
-    QQ.sys.uname.is-windows
-    nop
-    assert-that
-      QQ.sys.call
-        "write"
-        1
-        msg
-        msg.length
-      $.equal-to
-        msg.length
