@@ -86,6 +86,7 @@ SOFTWARE.
       <groupId>org.eolang</groupId>
       <artifactId>eo-runtime</artifactId>
       <version>0.26.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>
