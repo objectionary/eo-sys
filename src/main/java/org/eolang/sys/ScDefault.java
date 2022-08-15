@@ -24,13 +24,16 @@
 package org.eolang.sys;
 
 import com.sun.jna.Native;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.eolang.ExFailure;
+import org.eolang.Phi;
 
 /**
  * Base call to `syscall`.
  * @since 0.1
  */
-public final class ScDefault implements SysCall {
+final class ScDefault implements SysCall {
 
     /**
      * Id of a function to call via `syscall`.
@@ -41,13 +44,37 @@ public final class ScDefault implements SysCall {
      * Ctor.
      * @param cid ID of a function
      */
-    public ScDefault(final int cid) {
+    ScDefault(final int cid) {
         this.cid = cid;
     }
 
     @Override
-    public long call(final CStdLib lib, final Object[] params) {
-        final int ret = lib.syscall(this.cid, params);
+    public long call(final Object[] params) {
+        final Object[] prepared = Arrays.stream(params).sequential()
+            .map(
+                p -> {
+                    Object checked = p;
+                    if (checked instanceof String) {
+                        checked = Native.toByteArray(
+                            String.class.cast(checked), StandardCharsets.UTF_8
+                        );
+                    }
+                    if (checked instanceof Long) {
+                        checked = Long.class.cast(checked).intValue();
+                    }
+                    if (checked instanceof Double || checked instanceof Boolean
+                        || checked instanceof Phi[]) {
+                        throw new ExFailure(
+                            String.format(
+                                "Type '%s' is not supported by syscall",
+                                checked.getClass().getCanonicalName()
+                            )
+                        );
+                    }
+                    return checked;
+                }
+            ).toArray();
+        final int ret = CStdLib.CSTDLIB.syscall(this.cid, prepared);
         if (ret == -1) {
             throw new ExFailure(
                 String.format(

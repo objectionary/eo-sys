@@ -23,10 +23,10 @@
  */
 package org.eolang.sys;
 
-import EOorg.EOeolang.EOsys.EOcall;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.eolang.ExFailure;
 
 /**
  * Known system functions.
@@ -41,8 +41,13 @@ public final class Glossary {
      */
     private static final Map<String, SysCall> GLOSSARY = new HashMap<>(0);
 
+    /**
+     * OS name.
+     */
+    private static final String UNAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+
     static {
-        final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
+        final String uname = Glossary.UNAME;
         if (uname.contains("mac")) {
             Glossary.GLOSSARY.put("write", new ScDefault(4));
             Glossary.GLOSSARY.put("getpid", new ScDefault(20));
@@ -75,16 +80,23 @@ public final class Glossary {
      * @param func Function name
      * @return Function spec
      */
-    public static SysCall sysfunc(final String func) {
-        return Glossary.GLOSSARY.get(func);
-    }
-
-    /**
-     * Is it known function?
-     * @param txt Function name
-     * @return True if known function false otherwise
-     */
-    public static boolean contains(final String txt) {
-        return Glossary.GLOSSARY.containsKey(txt);
+    public static SysCall syscall(final String func) {
+        final SysCall result;
+        if (func.matches("[0-9]+")) {
+            result = new ScDefault(
+                Integer.parseInt(func)
+            );
+        } else {
+            if (!Glossary.GLOSSARY.containsKey(func)) {
+                throw new ExFailure(
+                    String.format(
+                        "Unknown syscall '%s' for '%s'",
+                        func, Glossary.UNAME
+                    )
+                );
+            }
+            result = Glossary.GLOSSARY.get(func);
+        }
+        return result;
     }
 }

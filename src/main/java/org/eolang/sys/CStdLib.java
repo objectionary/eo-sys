@@ -24,12 +24,21 @@
 package org.eolang.sys;
 
 import com.sun.jna.Library;
+import com.sun.jna.Native;
 
 /**
  * Interface to stdlib.
  * @since 0.1
  */
-public interface CStdLib extends Library {
+interface CStdLib extends Library {
+
+    /**
+     * C STDLIB instance.
+     */
+    CStdLib CSTDLIB = CStdLib.class.cast(
+        Native.load("c", CStdLib.class)
+    );
+
     /**
      * Make syscall.
      * @param cid Call ID from sys/syscall.h

@@ -30,9 +30,8 @@ package org.eolang.sys;
 public interface SysCall {
     /**
      * Call function.
-     * @param lib System library under which the call is made.
      * @param params Function parameters
      * @return Function result call
      */
-    long call(CStdLib lib, Object[] params);
+    long call(Object[] params);
 }

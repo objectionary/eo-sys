@@ -24,21 +24,15 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import com.sun.jna.Native;
-import java.nio.charset.StandardCharsets;
 import org.eolang.AtComposite;
 import org.eolang.AtFree;
 import org.eolang.AtVararg;
 import org.eolang.Data;
 import org.eolang.Dataized;
-import org.eolang.ExFailure;
 import org.eolang.Param;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
-import org.eolang.sys.CStdLib;
 import org.eolang.sys.Glossary;
-import org.eolang.sys.ScDefault;
-import org.eolang.sys.SysCall;
 
 /**
  * CALL.
@@ -47,11 +41,6 @@ import org.eolang.sys.SysCall;
  * @checkstyle TypeNameCheck (100 lines)
  */
 public class EOcall extends PhDefault {
-
-    /**
-     * Name of the OS.
-     */
-    public static final String UNAME = System.getProperty("os.name");
 
     /**
      * Ctor.
@@ -66,64 +55,19 @@ public class EOcall extends PhDefault {
             new AtComposite(
                 this,
                 rho -> {
-                    final CStdLib lib = CStdLib.class.cast(
-                        Native.load("c", CStdLib.class)
-                    );
                     final Phi[] args = new Param(rho, "args").strong(Phi[].class);
                     final Object[] params = new Object[args.length];
                     for (int index = 0; index < args.length; ++index) {
-                        Object val = new Dataized(args[index]).take();
-                        if (val instanceof Long) {
-                            val = Long.class.cast(val).intValue();
-                        }
-                        if (val instanceof String) {
-                            val = Native.toByteArray(
-                                String.class.cast(val), StandardCharsets.UTF_8
-                            );
-                        }
-                        if (val instanceof Double || val instanceof Boolean
-                            || val instanceof Phi[]) {
-                            throw new ExFailure(
-                                String.format(
-                                    "Type '%s' is not supported by syscall",
-                                    val.getClass().getCanonicalName()
-                                )
-                            );
-                        }
+                        final Object val = new Dataized(args[index]).take();
                         params[index] = val;
                     }
-                    final SysCall syscall = EOcall.sysfunc(rho);
-                    final long ret = syscall.call(lib, params);
-                    return new Data.ToPhi(ret);
+                    return new Data.ToPhi(
+                        Glossary.syscall(
+                            new Param(rho, "id").strong(String.class)
+                        ).call(params)
+                    );
                 }
             )
         );
     }
-
-    /**
-     * Take call ID.
-     * @param rho The \rho
-     * @return ID
-     */
-    private static SysCall sysfunc(final Phi rho) {
-        final String txt = new Param(rho, "id").strong(String.class);
-        if (!Glossary.contains(txt)) {
-            throw new ExFailure(
-                String.format(
-                    "Unknown syscall '%s' for '%s'",
-                    txt, EOcall.UNAME
-                )
-            );
-        }
-        final SysCall result;
-        if (txt.matches("[0-9]+")) {
-            result = new ScDefault(
-                Integer.parseInt(txt)
-            );
-        } else {
-            result = Glossary.sysfunc(txt);
-        }
-        return result;
-    }
-
 }

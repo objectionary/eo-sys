@@ -29,7 +29,7 @@ import com.sun.jna.Structure;
  * A `gettimeofday` system function.
  * @since 0.1
  */
-public final class ScGetTimeOfDay implements SysCall {
+final class ScGetTimeOfDay implements SysCall {
     /**
      * Base system function call.
      */
@@ -39,15 +39,15 @@ public final class ScGetTimeOfDay implements SysCall {
      * Ctor.
      * @param underlying Underlying system call
      */
-    public ScGetTimeOfDay(final SysCall underlying) {
+    ScGetTimeOfDay(final SysCall underlying) {
         this.underlying = underlying;
     }
 
     @Override
-    public long call(final CStdLib lib, final Object[] params) {
+    public long call(final Object[] params) {
         final Timeval timeval = new Timeval();
         final Object[] adjusted = new Object[]{timeval, null};
-        this.underlying.call(lib, adjusted);
+        this.underlying.call(adjusted);
         return timeval.sec * 1000000 + timeval.usec;
     }
 
