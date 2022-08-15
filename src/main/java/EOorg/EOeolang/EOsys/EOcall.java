@@ -24,12 +24,8 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import com.sun.jna.Library;
 import com.sun.jna.Native;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import org.eolang.AtComposite;
 import org.eolang.AtFree;
 import org.eolang.AtVararg;
@@ -39,6 +35,10 @@ import org.eolang.ExFailure;
 import org.eolang.Param;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
+import org.eolang.sys.CStdLib;
+import org.eolang.sys.Glossary;
+import org.eolang.sys.ScDefault;
+import org.eolang.sys.SysCall;
 
 /**
  * CALL.
@@ -54,25 +54,6 @@ public class EOcall extends PhDefault {
     public static final String UNAME = System.getProperty("os.name");
 
     /**
-     * Syscall IDs.
-     * @link https://opensource.apple.com/source/xnu/xnu-1504.3.12/bsd/kern/syscalls.master
-     * @link https://unix.stackexchange.com/questions/421750/where-do-you-find-the-syscall-table-for-linux
-     * @link https://github.com/torvalds/linux/blob/v4.17/arch/x86/entry/syscalls/syscall_64.tbl#L11
-     */
-    private static final Map<String, Integer> GLOSSARY = new HashMap<>(0);
-
-    static {
-        final String uname = EOcall.UNAME.toLowerCase(Locale.ENGLISH);
-        if (uname.contains("mac")) {
-            EOcall.GLOSSARY.put("write", 4);
-            EOcall.GLOSSARY.put("getpid", 20);
-        } else if (uname.contains("linux")) {
-            EOcall.GLOSSARY.put("write", 1);
-            EOcall.GLOSSARY.put("getpid", 39);
-        }
-    }
-
-    /**
      * Ctor.
      * @param sigma The \sigma
      */
@@ -85,8 +66,8 @@ public class EOcall extends PhDefault {
             new AtComposite(
                 this,
                 rho -> {
-                    final EOcall.CStdLib lib = EOcall.CStdLib.class.cast(
-                        Native.load("c", EOcall.CStdLib.class)
+                    final CStdLib lib = CStdLib.class.cast(
+                        Native.load("c", CStdLib.class)
                     );
                     final Phi[] args = new Param(rho, "args").strong(Phi[].class);
                     final Object[] params = new Object[args.length];
@@ -111,21 +92,9 @@ public class EOcall extends PhDefault {
                         }
                         params[index] = val;
                     }
-                    final int cid = EOcall.number(rho);
-                    final int ret = Integer.class.cast(
-                        lib.getClass().getMethod("syscall", int.class, Object[].class).invoke(
-                            lib, cid, params
-                        )
-                    );
-                    if (ret == -1) {
-                        throw new ExFailure(
-                            String.format(
-                                "Syscall #%d returned -1, while errno=%d",
-                                cid, Native.getLastError()
-                            )
-                        );
-                    }
-                    return new Data.ToPhi((long) ret);
+                    final SysCall syscall = EOcall.sysfunc(rho);
+                    final long ret = syscall.call(lib, params);
+                    return new Data.ToPhi(ret);
                 }
             )
         );
@@ -136,23 +105,9 @@ public class EOcall extends PhDefault {
      * @param rho The \rho
      * @return ID
      */
-    private static int number(final Phi rho) {
+    private static SysCall sysfunc(final Phi rho) {
         final String txt = new Param(rho, "id").strong(String.class);
-        final Integer cid;
-        if (txt.matches("[0-9]+")) {
-            cid = Integer.parseInt(txt);
-        } else {
-            cid = EOcall.GLOSSARY.get(txt);
-        }
-        if (EOcall.GLOSSARY.isEmpty()) {
-            throw new ExFailure(
-                String.format(
-                    "It's impossible to syscall at this OS: '%s'",
-                    EOcall.UNAME
-                )
-            );
-        }
-        if (cid == null) {
+        if (!Glossary.contains(txt)) {
             throw new ExFailure(
                 String.format(
                     "Unknown syscall '%s' for '%s'",
@@ -160,21 +115,15 @@ public class EOcall extends PhDefault {
                 )
             );
         }
-        return cid;
-    }
-
-    /**
-     * Interface to stdlib.
-     * @since 0.1
-     */
-    interface CStdLib extends Library {
-        /**
-         * Make syscall.
-         * @param cid Call ID from sys/syscall.h
-         * @param args Arguments
-         * @return The result as LONG
-         */
-        int syscall(int cid, Object... args);
+        final SysCall result;
+        if (txt.matches("[0-9]+")) {
+            result = new ScDefault(
+                Integer.parseInt(txt)
+            );
+        } else {
+            result = Glossary.sysfunc(txt);
+        }
+        return result;
     }
 
 }
