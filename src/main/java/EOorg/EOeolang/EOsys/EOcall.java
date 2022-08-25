@@ -32,7 +32,6 @@ import org.eolang.Dataized;
 import org.eolang.Param;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
-import org.eolang.sys.Glossary;
 
 /**
  * CALL.

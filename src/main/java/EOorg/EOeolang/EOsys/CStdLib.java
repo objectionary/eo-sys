@@ -21,10 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// @checkstyle PackageNameCheck (1 line)
+package EOorg.EOeolang.EOsys;
+
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
 /**
- * Interaction with native system.
- *
+ * Interface to stdlib.
  * @since 0.1
  */
-package org.eolang.sys;
+interface CStdLib extends Library {
+
+    /**
+     * C STDLIB instance.
+     */
+    CStdLib CSTDLIB = CStdLib.class.cast(
+        Native.load("c", CStdLib.class)
+    );
+
+    /**
+     * Make syscall.
+     * @param cid Call ID from sys/syscall.h
+     * @param args Arguments
+     * @return The result as LONG
+     */
+    int syscall(int cid, Object... args);
+}

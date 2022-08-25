@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.sys;
+// @checkstyle PackageNameCheck (1 line)
+package EOorg.EOeolang.EOsys;
 
 /**
  * A call of a system function.
  * @since 0.1
  */
-public interface SysCall {
+interface SysCall {
     /**
      * Call function.
      * @param params Function parameters

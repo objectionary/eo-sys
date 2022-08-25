@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.sys;
+// @checkstyle PackageNameCheck (1 line)
+package EOorg.EOeolang.EOsys;
 
 import com.sun.jna.Native;
 import java.nio.charset.StandardCharsets;

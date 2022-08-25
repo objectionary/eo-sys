@@ -21,29 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.sys;
+// @checkstyle PackageNameCheck (1 line)
+package EOorg.EOeolang.EOsys;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
+import com.sun.jna.Structure;
 
 /**
- * Interface to stdlib.
+ * A `gettimeofday` system function.
  * @since 0.1
  */
-interface CStdLib extends Library {
+final class ScGetTimeOfDay implements SysCall {
+    /**
+     * Base system function call.
+     */
+    private final SysCall underlying;
 
     /**
-     * C STDLIB instance.
+     * Ctor.
+     * @param underlying Underlying system call
      */
-    CStdLib CSTDLIB = CStdLib.class.cast(
-        Native.load("c", CStdLib.class)
-    );
+    ScGetTimeOfDay(final SysCall underlying) {
+        this.underlying = underlying;
+    }
+
+    @Override
+    public long call(final Object[] params) {
+        final Timeval timeval = new Timeval();
+        final Object[] adjusted = new Object[]{timeval, null};
+        this.underlying.call(adjusted);
+        return timeval.sec * 1000000 + timeval.usec;
+    }
 
     /**
-     * Make syscall.
-     * @param cid Call ID from sys/syscall.h
-     * @param args Arguments
-     * @return The result as LONG
+     * Timeval structure specification as per
+     * <a href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">Linux man page</a>.
+     * @since 0.1
+     * @checkstyle VisibilityModifierCheck (20 lines)
      */
-    int syscall(int cid, Object... args);
+    @Structure.FieldOrder({"sec", "usec"})
+    public static class Timeval extends Structure {
+        /**
+         * Seconds.
+         */
+        public long sec;
+
+        /**
+         * Microseconds.
+         */
+        public long usec;
+    }
 }

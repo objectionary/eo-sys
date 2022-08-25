@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.sys;
+// @checkstyle PackageNameCheck (1 line)
+package EOorg.EOeolang.EOsys;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -32,7 +33,7 @@ import org.eolang.ExFailure;
  * Known system functions.
  * @since 0.1
  */
-public final class Glossary {
+final class Glossary {
     /**
      * Syscall IDs.
      * @link <a href="https://opensource.apple.com/source/xnu/xnu-1504.3.12/bsd/kern/syscalls.master">syscalls.master</a>
