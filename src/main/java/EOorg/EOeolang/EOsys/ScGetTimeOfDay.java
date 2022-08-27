@@ -24,49 +24,50 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import org.eolang.AtComposite;
-import org.eolang.AtFree;
-import org.eolang.AtVararg;
-import org.eolang.Data;
-import org.eolang.Dataized;
-import org.eolang.Param;
-import org.eolang.PhDefault;
-import org.eolang.Phi;
+import com.sun.jna.Structure;
 
 /**
- * CALL.
- *
+ * A `gettimeofday` system function.
  * @since 0.1
- * @checkstyle TypeNameCheck (100 lines)
  */
-public class EOcall extends PhDefault {
+final class ScGetTimeOfDay implements SysCall {
+    /**
+     * Base system function call.
+     */
+    private final SysCall underlying;
 
     /**
      * Ctor.
-     * @param sigma The \sigma
+     * @param underlying Underlying system call
      */
-    public EOcall(final Phi sigma) {
-        super(sigma);
-        this.add("id", new AtFree());
-        this.add("args", new AtVararg());
-        this.add(
-            "φ",
-            new AtComposite(
-                this,
-                rho -> {
-                    final Phi[] args = new Param(rho, "args").strong(Phi[].class);
-                    final Object[] params = new Object[args.length];
-                    for (int index = 0; index < args.length; ++index) {
-                        final Object val = new Dataized(args[index]).take();
-                        params[index] = val;
-                    }
-                    return new Data.ToPhi(
-                        Glossary.syscall(
-                            new Param(rho, "id").strong(String.class)
-                        ).call(params)
-                    );
-                }
-            )
-        );
+    ScGetTimeOfDay(final SysCall underlying) {
+        this.underlying = underlying;
+    }
+
+    @Override
+    public long call(final Object[] params) {
+        final Timeval timeval = new Timeval();
+        final Object[] adjusted = new Object[]{timeval, null};
+        this.underlying.call(adjusted);
+        return timeval.sec * 1000000 + timeval.usec;
+    }
+
+    /**
+     * Timeval structure specification as per
+     * <a href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">Linux man page</a>.
+     * @since 0.1
+     * @checkstyle VisibilityModifierCheck (20 lines)
+     */
+    @Structure.FieldOrder({"sec", "usec"})
+    public static class Timeval extends Structure {
+        /**
+         * Seconds.
+         */
+        public long sec;
+
+        /**
+         * Microseconds.
+         */
+        public long usec;
     }
 }

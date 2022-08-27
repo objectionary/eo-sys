@@ -24,49 +24,27 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
-import org.eolang.AtComposite;
-import org.eolang.AtFree;
-import org.eolang.AtVararg;
-import org.eolang.Data;
-import org.eolang.Dataized;
-import org.eolang.Param;
-import org.eolang.PhDefault;
-import org.eolang.Phi;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
 /**
- * CALL.
- *
+ * Interface to stdlib.
  * @since 0.1
- * @checkstyle TypeNameCheck (100 lines)
  */
-public class EOcall extends PhDefault {
+interface CStdLib extends Library {
 
     /**
-     * Ctor.
-     * @param sigma The \sigma
+     * C STDLIB instance.
      */
-    public EOcall(final Phi sigma) {
-        super(sigma);
-        this.add("id", new AtFree());
-        this.add("args", new AtVararg());
-        this.add(
-            "φ",
-            new AtComposite(
-                this,
-                rho -> {
-                    final Phi[] args = new Param(rho, "args").strong(Phi[].class);
-                    final Object[] params = new Object[args.length];
-                    for (int index = 0; index < args.length; ++index) {
-                        final Object val = new Dataized(args[index]).take();
-                        params[index] = val;
-                    }
-                    return new Data.ToPhi(
-                        Glossary.syscall(
-                            new Param(rho, "id").strong(String.class)
-                        ).call(params)
-                    );
-                }
-            )
-        );
-    }
+    CStdLib CSTDLIB = CStdLib.class.cast(
+        Native.load("c", CStdLib.class)
+    );
+
+    /**
+     * Make syscall.
+     * @param cid Call ID from sys/syscall.h
+     * @param args Arguments
+     * @return The result as LONG
+     */
+    int syscall(int cid, Object... args);
 }

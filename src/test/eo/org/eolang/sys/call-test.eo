@@ -52,3 +52,12 @@
         msg.length
       $.equal-to
         msg.length
+
+[] > get-time-of-day-test
+  if. > @
+    QQ.sys.uname.is-windows
+    nop
+    assert-that
+      QQ.sys.call
+        "gettimeofday"
+      $.greater-than 0
