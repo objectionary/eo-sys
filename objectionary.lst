@@ -1,6 +1,6 @@
-objectionary/objects/org/eolang/sys/win32.eo
+objectionary/tests/org/eolang/sys/win32-test.eo
+objectionary/tests/org/eolang/sys/call-test.eo
+objectionary/tests/org/eolang/sys/uname-test.eo
 objectionary/objects/org/eolang/sys/call.eo
 objectionary/objects/org/eolang/sys/uname.eo
-objectionary/tests/org/eolang/sys/win32-test.eo
-objectionary/tests/org/eolang/sys/uname-test.eo
-objectionary/tests/org/eolang/sys/call-test.eo
+objectionary/objects/org/eolang/sys/win32.eo
