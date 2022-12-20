@@ -83,6 +83,27 @@ SOFTWARE.
   </distributionManagement>
   <dependencies>
     <dependency>
+      <!-- We need it here for Javadoc compilation -->
+      <groupId>org.eolang</groupId>
+      <artifactId>eo-runtime</artifactId>
+      <version>0.28.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- We need it here for Javadoc compilation -->
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.12.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- We need it here for Javadoc compilation -->
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna-platform</artifactId>
+      <version>5.12.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.1</version>
