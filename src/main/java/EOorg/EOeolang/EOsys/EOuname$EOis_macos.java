@@ -24,14 +24,11 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
+import java.util.Locale;
 import org.eolang.AtComposite;
-import org.eolang.AtOnce;
-import org.eolang.AtSimple;
 import org.eolang.Data;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
-
-import java.util.Locale;
 
 /**
  * UNAME.IS-MACOS.
