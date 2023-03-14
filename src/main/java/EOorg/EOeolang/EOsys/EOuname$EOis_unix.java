@@ -37,13 +37,13 @@ import java.util.Locale;
  * @since 0.1
  * @checkstyle TypeNameCheck (100 lines)
  */
-public class EOuname$EOis_linux extends PhDefault {
+public class EOuname$EOis_unix extends PhDefault {
 
     /**
      * Ctor.
      * @param sigma The \sigma
      */
-    public EOuname$EOis_linux(final Phi sigma) {
+    public EOuname$EOis_unix(final Phi sigma) {
         super(sigma);
         this.add("φ", new AtComposite(this, rho -> new Data.ToPhi(
             System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("linux")
