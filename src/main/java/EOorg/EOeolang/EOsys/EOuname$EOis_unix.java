@@ -44,10 +44,14 @@ public class EOuname$EOis_unix extends PhDefault {
      */
     public EOuname$EOis_unix(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(
-            this,
-            rho -> new Data.ToPhi(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("linux")
-        )));
+        this.add(
+            "φ",
+            new AtComposite(
+                this,
+                rho -> new Data.ToPhi(
+                    System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("linux")
+                )
+            ));
     }
 
 }

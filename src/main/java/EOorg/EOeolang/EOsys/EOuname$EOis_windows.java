@@ -45,10 +45,12 @@ public class EOuname$EOis_windows extends PhDefault {
      */
     public EOuname$EOis_windows(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(
-            this,
-            rho -> new Data.ToPhi(System.getProperty("os.name").startsWith("Windows")
-        )));
+        this.add(
+            "φ",
+            new AtComposite(
+                this,
+                rho -> new Data.ToPhi(System.getProperty("os.name").startsWith("Windows"))
+            ));
     }
 
 }

@@ -47,10 +47,14 @@ public class EOuname$EOis_macos extends PhDefault {
      */
     public EOuname$EOis_macos(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(
-            this,
-            rho -> new Data.ToPhi(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")
-        )));
+        this.add(
+            "φ",
+            new AtComposite(
+                this,
+                rho -> new Data.ToPhi(
+                    System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")
+                )
+            ));
     }
 
 }
