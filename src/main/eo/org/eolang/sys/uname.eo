@@ -35,23 +35,20 @@
   # TRUE if it's Windows
   [] > is-windows
     contains. > @
-      QQ.txt.text
-        lower-case.
-          QQ.txt.text ^
+      low-cased.
+        QQ.txt.text ^
       "windows"
 
   # TRUE if it's Unix
   [] > is-unix
     contains. > @
-      QQ.txt.text
-        lower-case.
-          QQ.txt.text ^
+      low-cased.
+        QQ.txt.text ^
       "linux"
 
   # TRUE if it's MacOS
   [] > is-macos
     contains. > @
-      QQ.txt.text
-        lower-case.
-          QQ.txt.text ^
+      low-cased.
+        QQ.txt.text ^
       "mac"
