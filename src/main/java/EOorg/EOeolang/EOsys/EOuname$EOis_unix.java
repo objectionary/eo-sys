@@ -24,12 +24,11 @@
 // @checkstyle PackageNameCheck (1 line)
 package EOorg.EOeolang.EOsys;
 
+import java.util.Locale;
 import org.eolang.AtComposite;
 import org.eolang.Data;
 import org.eolang.PhDefault;
 import org.eolang.Phi;
-
-import java.util.Locale;
 
 /**
  * UNAME.IS-LINUX.
@@ -45,8 +44,9 @@ public class EOuname$EOis_unix extends PhDefault {
      */
     public EOuname$EOis_unix(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(this, rho -> new Data.ToPhi(
-            System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("linux")
+        this.add("φ", new AtComposite(
+            this,
+            rho -> new Data.ToPhi(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("linux")
         )));
     }
 

@@ -32,7 +32,7 @@ import org.eolang.PhDefault;
 import org.eolang.Phi;
 
 /**
- * UNAME.φ.
+ * UNAME.IS-WINDOWS.
  *
  * @since 0.1
  * @checkstyle TypeNameCheck (100 lines)
@@ -45,8 +45,9 @@ public class EOuname$EOis_windows extends PhDefault {
      */
     public EOuname$EOis_windows(final Phi sigma) {
         super(sigma);
-        this.add("φ", new AtComposite(this, rho -> new Data.ToPhi(
-            System.getProperty("os.name").startsWith("Windows")
+        this.add("φ", new AtComposite(
+            this,
+            rho -> new Data.ToPhi(System.getProperty("os.name").startsWith("Windows")
         )));
     }
 
