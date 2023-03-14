@@ -33,22 +33,10 @@
   [] > @ /string
 
   # TRUE if it's Windows
-  [] > is-windows
-    contains. > @
-      low-cased.
-        QQ.txt.text ^
-      "windows"
+  [] > is-windows /bool
 
   # TRUE if it's Unix
-  [] > is-unix
-    contains. > @
-      low-cased.
-        QQ.txt.text ^
-      "linux"
+  [] > is-unix /bool
 
   # TRUE if it's MacOS
-  [] > is-macos
-    contains. > @
-      low-cased.
-        QQ.txt.text ^
-      "mac"
+  [] > is-macos /bool
