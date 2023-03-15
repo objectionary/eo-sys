@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
++alias org.eolang.txt.text
 +architect yegor256@gmail.com
 +home https://github.com/objectionary/eo-sys
 +package org.eolang.sys
@@ -34,23 +35,20 @@
   # TRUE if it's Windows
   [] > is-windows
     contains. > @
-      QQ.txt.text
-        low-cased.
-          QQ.txt.text ^
+      low-cased.
+        text ^
       "windows"
 
   # TRUE if it's Unix
   [] > is-unix
     contains. > @
-      QQ.txt.text
-        low-cased.
-          QQ.txt.text ^
+      low-cased.
+        text ^
       "linux"
 
   # TRUE if it's MacOS
   [] > is-macos
     contains. > @
-      QQ.txt.text
-        low-cased.
-          QQ.txt.text ^
+      low-cased.
+        text ^
       "mac"
