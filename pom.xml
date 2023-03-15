@@ -173,7 +173,6 @@ SOFTWARE.
           <systemProperties>
             <java.util.logging.config.file>${project.basedir}/src/test/resources/jul.properties</java.util.logging.config.file>
           </systemProperties>
-          <argLine>-Xss32M</argLine>
         </configuration>
       </plugin>
       <plugin>
