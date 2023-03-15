@@ -37,18 +37,18 @@
     contains. > @
       low-cased.
         text ^
-      "windows"
+      text "windows"
 
   # TRUE if it's Unix
   [] > is-unix
     contains. > @
       low-cased.
         text ^
-      "linux"
+      text "linux"
 
   # TRUE if it's MacOS
   [] > is-macos
     contains. > @
       low-cased.
         text ^
-      "mac"
+      text "mac"
