@@ -31,7 +31,7 @@ SOFTWARE.
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>eo-sys</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.8</version>
   <packaging>jar</packaging>
   <name>eo-sys</name>
   <description>EO Objects for Operating System Interactions</description>
