@@ -32,7 +32,6 @@
 #  This object can be implementet by EO. But for now it is impossible
 #  due to failed build on Windows.
 [] > uname
-
   [] > @ /string
 
   # TRUE if it's Windows
