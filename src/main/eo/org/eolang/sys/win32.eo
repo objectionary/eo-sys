@@ -34,4 +34,4 @@
 # QQ.sys.win32 "GetCurrentProcessId"
 # ```
 #
-[function args...] > win32 /?
+[function args...] > win32 /int
