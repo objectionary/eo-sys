@@ -39,20 +39,19 @@
 
 # Making a syscall 'write' and prints a short message
 # to the console.
-[] > prints-to-console
+[] > print-to-console
   "Hello, друг!" > msg
-  nop > @
-    if.
-      QQ.sys.uname.is-windows
-      nop
-      assert-that
-        QQ.sys.call
-          "write"
-          1
-          msg
-          msg.length
-        $.equal-to
-          msg.length
+  if. > @
+    QQ.sys.uname.is-windows
+    nop
+    assert-that
+      QQ.sys.call
+        "write"
+        1
+        msg
+        msg.length
+      $.equal-to
+        msg.length
 
 [] > get-time-of-day-test
   if. > @

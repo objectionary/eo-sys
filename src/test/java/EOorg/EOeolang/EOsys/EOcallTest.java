@@ -31,7 +31,6 @@ import org.eolang.PhWith;
 import org.eolang.Phi;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -65,7 +64,6 @@ public final class EOcallTest {
     }
 
     @Test
-    @Disabled
     @DisabledOnOs(OS.WINDOWS)
     public void printsToConsole() {
         final String msg = "Hello, друг!\n";
