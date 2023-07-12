@@ -86,13 +86,20 @@ SOFTWARE.
       <!-- We need it here for Javadoc compilation -->
       <groupId>org.eolang</groupId>
       <artifactId>eo-runtime</artifactId>
-      <version>0.29.5</version>
+      <version>0.29.6</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <!-- We need it here for Javadoc compilation -->
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna-platform</artifactId>
+      <version>5.13.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- We need it here for Javadoc compilation -->
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
       <version>5.13.0</version>
       <scope>provided</scope>
     </dependency>
