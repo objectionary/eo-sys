@@ -251,7 +251,7 @@ SOFTWARE.
               <excludes combine.children="append">
                 <exclude>pmd:.*</exclude>
                 <!--
-                @todo #1890:30min Turn on duplicate finder. For some reason
+                @todo #71:30min Turn on duplicate finder. For some reason
                   qulice fails on github actions with "Found duplicate (but
                   equal) resources in [net.java.dev.jna:jna:5.13.0,
                   org.eolang:eo-sys:1.0-SNAPSHOT] :
