@@ -39,7 +39,7 @@
 
 # Making a syscall 'write' and prints a short message
 # to the console.
-[] > print-to-console
+[] > prints-to-console
   "Hello, друг!" > msg
   if. > @
     QQ.sys.uname.is-windows
