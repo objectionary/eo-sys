@@ -86,7 +86,7 @@ SOFTWARE.
       <!-- We need it here for Javadoc compilation -->
       <groupId>org.eolang</groupId>
       <artifactId>eo-runtime</artifactId>
-      <version>0.30.0</version>
+      <version>0.31.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
